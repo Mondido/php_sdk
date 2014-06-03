@@ -1,4 +1,5 @@
 <?php namespace mondido;
+include_once 'http_helper.php';
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -11,6 +12,9 @@
 class mondido_sdk {
     public $raw_data = null;
     public $transaction = null;
+    private static $username = "1";
+    private static $password = "custom00";
+    private static $apiUrl = "http://api.localmondido.com:3000/v1/";
 
     /*
      * parse POST JSON data from WebHook
@@ -51,19 +55,32 @@ class mondido_sdk {
         file_put_contents($path, $log);
     }
 
+    //returns a transaction
     public static function getTransaction($id){
-
+        $remote_url = self::$apiUrl.'transactions/'.$id;
+        $uname = self::$username;
+        $pass = self::$password;
+        return http_helper::get($uname,$pass,$remote_url);
     }
-
     public static function createTransaction($params){
 
     }
 
-    public static function listTransactions(){
-
+    /*
+     * list transactions with a offset and a limit
+     */
+    public static function listTransactions($limit, $offset){
+        $remote_url = self::$apiUrl.'transactions/?limit='.$limit.'&offset='.$offset;
+        $uname = self::$username;
+        $pass = self::$password;
+        return http_helper::get($uname,$pass,$remote_url);
     }
 
-    public static function createRefund($reason,$amount){
-
+    public static function createRefund($transaction_id,$reason,$amount){
+        $remote_url = self::$apiUrl.'refunds';
+        $uname = self::$username;
+        $pass = self::$password;
+        $data = array('transaction_id' => $transaction_id, 'reason' => $reason, 'amount' => $amount);
+        return http_helper::post($uname,$pass,$remote_url,$data);
     }
 }
