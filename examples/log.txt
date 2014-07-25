@@ -1,0 +1,17 @@
+id: 
+created_at: 
+amount: 
+payment_ref: 
+card_holder: 
+card_number: 
+metadata: 
+currency: 
+status: 
+card_type: 
+error: 
+cost: 
+stored_card: 
+customer: 
+transaction_type: 
+subscription: 
+webhooks: 

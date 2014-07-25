@@ -1,13 +1,4 @@
-<?php
-/**
- * Created by JetBrains PhpStorm.
- * User: robertpohl
- * Date: 03/06/14
- * Time: 17:37
- * To change this template use File | Settings | File Templates.
- */
-
-namespace mondido;
+<?php namespace mondido;
 
 
 class http_helper {
