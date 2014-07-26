@@ -1,6 +1,6 @@
 <?
 error_reporting(E_ALL);
-include 'src/mondido_sdk.php';
+require_once(dirname(__FILE__) . '/../src/mondido_sdk.php');
 
 //get the transaction id from the POST
 $transaction = mondido\request\webhook::get();
