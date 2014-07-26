@@ -6,7 +6,7 @@
  * Time: 22:44
  * To change this template use File | Settings | File Templates.
  */
-require(dirname(__FILE__) . '/test_base.php');
+require_once(dirname(__FILE__) . '/test_base.php');
 
 class api_base_Test extends mondido\test\test_base {
 

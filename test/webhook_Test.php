@@ -8,8 +8,21 @@
  */
 
 namespace mondido\test;
+use mondido\request\webhook;
+use mondido\api\transaction;
+
+require_once(dirname(__FILE__) . '/test_base.php');
+
+class webhook_Test extends test_base {
+
+    public function testGetwebhook(){
+        $transaction = transaction::get(443);
+        $path = 'wh.json';
+        file_put_contents($path, json_encode($transaction));
+
+        $transaction2 = webhook::get($path);
+        $this->assertEquals($transaction['id'], $transaction2['id']);
 
 
-class webhook_Test extends \PHPUnit_Framework_TestCase {
-
+    }
 }

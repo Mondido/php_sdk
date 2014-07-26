@@ -10,6 +10,8 @@
 namespace mondido\test;
 use mondido\api\transaction;
 
+require_once(dirname(__FILE__) . '/test_base.php');
+
 class api_transaction_Test extends test_base {
 
     public function testGetTransaction(){
