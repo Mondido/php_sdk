@@ -15,11 +15,14 @@ require_once(dirname(__FILE__) . '/test_base.php');
 class api_transaction_Test extends test_base {
 
     public function testGetTransaction(){
+        echo "Testing transaction::get\n";
+
         $transaction = transaction::get(443);
         $this->assertEquals(443, $transaction['id']);
     }
 
     public function testGetTransactionsLimitOffset(){
+        echo "Testing transaction::index\n";
         $transactions = transaction::index(10,0);
         $this->assertEquals(10, count($transactions));
     }

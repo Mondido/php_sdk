@@ -12,18 +12,22 @@ class api_base_Test extends mondido\test\test_base {
 
     public function testGetApiUrl()
     {
+        echo "Testing api_base::getApiUrl()\n";
+
         $url = mondido\api\api_base::getApiUrl();
         $this->assertEquals('https://api.mondido.com/v1/', $url);
     }
 
     public function testPassword()
     {
+        echo "Testing api_base::getPassword()\n";
         $val = mondido\api\api_base::getPassword();
         $this->assertEquals('custom00', $val);
     }
 
     public function testUsername()
     {
+        echo "Testing api_base::getUsername()\n";
         $val = mondido\api\api_base::getUsername();
         $this->assertEquals('3', $val);
     }

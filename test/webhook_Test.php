@@ -15,7 +15,11 @@ require_once(dirname(__FILE__) . '/test_base.php');
 
 class webhook_Test extends test_base {
 
+    /**
+     * @covers webhook::get
+     */
     public function testGetwebhook(){
+        echo "Testing webhook::get\n";
         $transaction = transaction::get(443);
         $path = 'wh.json';
         file_put_contents($path, json_encode($transaction));
