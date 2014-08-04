@@ -1,8 +1,9 @@
 php_sdk 0.1
 =======
 
-The PHP SDK for Mondido Payments    
-In this first version you can get the POST data from a webhook:
+The PHP SDK for Mondido Payments
+
+
 ```php
 <?
     error_reporting(-1);
