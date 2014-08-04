@@ -26,7 +26,5 @@ class webhook_Test extends test_base {
 
         $transaction2 = webhook::get($path);
         $this->assertEquals($transaction['id'], $transaction2['id']);
-
-
     }
 }

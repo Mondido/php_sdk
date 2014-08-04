@@ -1,4 +1,5 @@
 <?php namespace mondido\api;
+use mondido\http_helper;
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -7,15 +8,15 @@
  * To change this template use File | Settings | File Templates.
  */
 
+class refund extends api_base{
 
+    public static function get($id){
+        $remote_url = self::getApiUrl().'refunds/'.$id;
+        return http_helper::get(self::getUsername(),self::getPassword(),$remote_url);
+    }
 
-
-class refund {
-    public static function create($transaction_id,$reason,$amount){
-        $remote_url = self::$apiUrl.'refunds';
-        $uname = self::$username;
-        $pass = self::$password;
-        $data = array('transaction_id' => $transaction_id, 'reason' => $reason, 'amount' => $amount);
-        return http_helper::post($uname,$pass,$remote_url,$data);
+    public static function create($data){
+        $remote_url = self::getApiUrl().'refunds';
+        return http_helper::post(self::getUsername(),self::getPassword(),$remote_url,$data);
     }
 }
