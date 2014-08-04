@@ -12,6 +12,7 @@ require(dirname(__FILE__) . '/../src/http_helper.php');
 require(dirname(__FILE__) . '/../src/request/webhook.php');
 require(dirname(__FILE__) . '/../src/api/api_base.php');
 require(dirname(__FILE__) . '/../src/api/transaction.php');
+require(dirname(__FILE__) . '/../src/api/stored_card.php');
 require(dirname(__FILE__) . '/../src/api/refund.php');
 require(dirname(__FILE__) . '/../src/settings/configuration.php');
 

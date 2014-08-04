@@ -9,6 +9,7 @@
 
 namespace mondido\test;
 use mondido\api\transaction;
+use mondido\settings\configuration;
 
 require_once(dirname(__FILE__) . '/test_base.php');
 
@@ -26,4 +27,27 @@ class api_transaction_Test extends test_base {
         $transactions = transaction::index(10,0);
         $this->assertEquals(10, count($transactions));
     }
+
+    public function testCreateTransaction(){
+        echo "Testing transaction::create\n";
+        $ref = rand(10, 100000);
+
+        $payment = array(
+            "card_number" => "4111111111111111",
+            "card_holder" => "php sdk",
+            "card_expiry" => "0116",
+            "card_cvv" => "200",
+            "card_type" => "VISA",
+            "amount" => "10.00",
+            "payment_ref" => $ref,
+            "currency" => "eur",
+            "test" => "true",
+            "hash" => md5(configuration::$app_settings['username'].$ref."10.00".configuration::$app_settings['secret'])
+        );
+        $transaction = transaction::create($payment);
+
+        $this->assertEquals($transaction['payment_ref'], $ref);
+    }
+
+
 }

@@ -12,7 +12,8 @@ class configuration {
     public static $app_settings =  array(
     "api_url" => "https://api.mondido.com/v1/",
     "username" => "3",
-    "password" => "custom00"
+    "password" => "custom00",
+    "secret" => '$2a$10$k/wS5qecZLyMmqo0e8GV9.'
     );
 
 }

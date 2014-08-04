@@ -18,9 +18,6 @@ class transaction  extends api_base{
         $remote_url = self::getApiUrl().'transactions/'.$id;
         return http_helper::get(self::getUsername(),self::getPassword(),$remote_url);
     }
-    public static function create($params){
-
-    }
 
     /*
      * list transactions with a offset and a limit
@@ -28,6 +25,11 @@ class transaction  extends api_base{
     public static function index($limit, $offset){
         $remote_url = self::getApiUrl().'transactions/?limit='.$limit.'&offset='.$offset;
         return http_helper::get(self::getUsername(),self::getPassword(),$remote_url);
+    }
+
+    public static function create($payment){
+        $remote_url = self::getApiUrl().'transactions';
+        return http_helper::post(self::getUsername(),self::getPassword(),$remote_url,$payment);
     }
 
 }

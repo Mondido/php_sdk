@@ -15,6 +15,18 @@ class http_helper {
         return json_decode($file, TRUE);
     }
 
+    public static function delete($uname,$pass,$url){
+        $opts = array(
+            'http'=>array(
+                'method'=>"DELETE",
+                'header' => "Authorization: Basic " . base64_encode("$uname:$pass")
+            )
+        );
+        $context = stream_context_create($opts);
+        $file = file_get_contents($url, false, $context);
+        return json_decode($file, TRUE);
+    }
+
     public static function post($uname,$pass,$url,$data){
         $opts = array(
             'http'=>array(
