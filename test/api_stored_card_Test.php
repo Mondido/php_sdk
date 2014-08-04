@@ -14,9 +14,9 @@ require_once(dirname(__FILE__) . '/test_base.php');
 
 class api_transaction_Test extends test_base {
 
-    public $card;
+    public static $card;
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
         $data = array(
             "card_number" => "4111111111111111",
@@ -27,15 +27,15 @@ class api_transaction_Test extends test_base {
             "currency" => "eur",
             "test" => "true"
         );
-
-        $this->card = stored_card::create($data);
+        echo "Testing stored_card, setting up a stored_card\n";
+        self::$card = stored_card::create($data);
     }
 
     public function testGetStoredcard(){
         echo "Testing stored_card::get\n";
 
-        $res = stored_card::get($this->card['id']);
-        $this->assertEquals($res['id'], $this->card['id']);
+        $res = stored_card::get(self::$card['id']);
+        $this->assertEquals($res['id'], self::$card['id']);
     }
 
     public function testGetStoredcardsLimitOffset(){
@@ -46,7 +46,7 @@ class api_transaction_Test extends test_base {
 
     public function testDeleteStoredcards(){
         echo "Testing stored_card::delete\n";
-        $res = stored_card::delete($this->card['id']);
+        $res = stored_card::delete(self::$card['id']);
         $this->assertEquals('deleted', $res['status']);
     }
 
