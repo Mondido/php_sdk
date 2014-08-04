@@ -15,3 +15,5 @@ In this first version you can get the POST data from a webhook:
     //log to file
     mondido\mondido_sdk::logToFile('log.txt',$transaction);
 ```
+
+The unit tests require PHPUnit to be installed and run `phpunit test/`
