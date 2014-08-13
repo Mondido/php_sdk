@@ -1,4 +1,4 @@
-php_sdk 0.1
+php_sdk 1.1
 =======
 
 The PHP SDK for Mondido Payments
