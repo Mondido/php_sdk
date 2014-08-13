@@ -35,18 +35,22 @@ class api_transaction_Test extends test_base {
         echo "Testing stored_card::get\n";
 
         $res = stored_card::get(self::$card['id']);
+        print_r($res);
         $this->assertEquals($res['id'], self::$card['id']);
     }
 
     public function testGetStoredcardsLimitOffset(){
         echo "Testing stored_card::index\n";
         $res = stored_card::index(2,0);
+        print_r($res);
         $this->assertEquals(2, count($res));
     }
 
     public function testDeleteStoredcards(){
         echo "Testing stored_card::delete\n";
         $res = stored_card::delete(self::$card['id']);
+        print_r($res);
+
         $this->assertEquals('deleted', $res['status']);
     }
 
@@ -65,6 +69,7 @@ class api_transaction_Test extends test_base {
         );
 
         $res = stored_card::create($data);
+        print_r($res);
 
         $this->assertEquals($res['card_holder'], $ref);
     }
