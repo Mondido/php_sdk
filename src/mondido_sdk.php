@@ -3,9 +3,15 @@ namespace mondido;
 
 require(dirname(__FILE__) . '/http_helper.php');
 require(dirname(__FILE__) . '/request/webhook.php');
+require(dirname(__FILE__) . '/api/api_base.php');
 require(dirname(__FILE__) . '/api/transaction.php');
 require(dirname(__FILE__) . '/api/refund.php');
+#require(dirname(__FILE__) . '/api/stored_card.php');
 require(dirname(__FILE__) . '/settings/configuration.php');
+
+require(dirname(__FILE__) . '/models/base_model.php');
+require(dirname(__FILE__) . '/models/transaction.php');
+require(dirname(__FILE__) . '/models/credit_card.php');
 
 
 class mondido_sdk {

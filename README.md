@@ -5,7 +5,7 @@ The PHP SDK for Mondido Payments
 
 
 ```php
-<?
+<?php
     error_reporting(-1);
     include_once 'mondido_sdk.php';
 
