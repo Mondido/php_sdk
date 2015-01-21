@@ -10,6 +10,8 @@
 namespace mondido\test;
 use mondido\api\transaction;
 use mondido\settings\configuration;
+use mondido\models\transaction as transaction_model;
+use mondido\models\credit_card;
 
 require_once(dirname(__FILE__) . '/test_base.php');
 
@@ -17,10 +19,11 @@ class api_transaction_Test extends test_base {
 
     public function testGetTransaction(){
         echo "Testing transaction::get\n";
+        $tid = 29633;
 
-        $transaction = transaction::get(443);
+        $transaction = transaction::get($tid);
         print_r($transaction);
-        $this->assertEquals(443, $transaction['id']);
+        $this->assertEquals($tid, $transaction['id']);
     }
 
     public function testGetTransactionsLimitOffset(){
@@ -32,25 +35,42 @@ class api_transaction_Test extends test_base {
 
     public function testCreateTransaction(){
         echo "Testing transaction::create\n";
-        $ref = rand(10, 100000);
+        $ref = "MyOrderId" . (string) rand(10, 100000);
 
-        $payment = array(
-            "card_number" => "4111111111111111",
-            "card_holder" => "php sdk",
-            "card_expiry" => "0116",
-            "card_cvv" => "200",
-            "card_type" => "VISA",
-            "amount" => "10.00",
-            "payment_ref" => $ref,
-            "currency" => "eur",
-            "test" => "true",
-            "hash" => md5(configuration::$app_settings['username'].$ref."10.00"."eur".configuration::$app_settings['secret'])
-            //the currency must be lower case while making the hash
-        );
-        $transaction = transaction::create($payment);
-        print_r($transaction);
+        $transaction = new transaction_model(array(
+            #"MerchantId" => "",
+            "Amount" => 10,
+            "PaymentRef" => $ref,
+            "Payment" => new credit_card(array(
+                "Holder" => "PHP SDK Test",
+                "Cvv" => "200",
+                "Expiry" => "0116",
+                "Number" => "4111111111111111",
+                "Type" => "VISA"
+            )),
+            "Test" => true,
+            "Metadata" => json_encode(array(
+                "name" => "PHP SDK"
+            )),
+            "Currency" => "usd",
+            "StoreCard" => true,
+            "PlanId" => 100,
+            #"CustomerRef" => "",
+            #"Hash" => "",
+            "Webhook" => json_encode(array(
+                "trigger" => "payment_success",
+                "email" => "myname@domain.com"
+            )),
+            "Encrypted" => "",
+            "Process" => true,
+            "SuccessUrl" => "",
+            "ErrorUrl" => ""
+        ));
 
-        $this->assertEquals($transaction['payment_ref'], $ref);
+        $response = transaction::create($transaction);
+        print_r($response);
+
+        $this->assertEquals($ref, $response['payment_ref']);
     }
 
 
