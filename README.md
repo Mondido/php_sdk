@@ -1,4 +1,4 @@
-php_sdk 1.1
+php_sdk 1.2
 =======
 
 The PHP SDK for Mondido Payments
@@ -18,3 +18,6 @@ The PHP SDK for Mondido Payments
 ```
 
 The unit tests require PHPUnit to be installed and run `phpunit test/`
+
+*Changelog*   
+- 1.2, Updated Hash recipe, refactor models, etc.

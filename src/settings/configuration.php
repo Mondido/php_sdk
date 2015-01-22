@@ -14,7 +14,7 @@ Get your merchant password and secret from the Mondido merchant settings page.
 class configuration {
     public static $app_settings =  array(
     "api_url" 		=> 'https://api.mondido.com/v1/',
-    "username" 		=> '',
+    "username" 		=> '148',
     "password" 		=> '',
     "secret" 		=> '',
     "algorithm" 	=> 'md5'

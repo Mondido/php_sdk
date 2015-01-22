@@ -19,7 +19,7 @@ class api_transaction_Test extends test_base {
 
     public function testGetTransaction(){
         echo "Testing transaction::get\n";
-        $tid = 29633;
+        $tid = 29621;
 
         $transaction = transaction::get($tid);
         print_r($transaction);
@@ -54,7 +54,7 @@ class api_transaction_Test extends test_base {
             )),
             "Currency" => "usd",
             "StoreCard" => true,
-            "PlanId" => 100,
+            "PlanId" => '',
             #"CustomerRef" => "",
             #"Hash" => "",
             "Webhook" => json_encode(array(
