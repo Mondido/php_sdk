@@ -27,9 +27,28 @@ class transaction  extends api_base{
         return http_helper::get(self::getUsername(),self::getPassword(),$remote_url);
     }
 
-    public static function create($payment){
+    public static function create($transaction){
+        $transaction_fields = $transaction->getAllAttributes();
+        $card_fields = $transaction->getPayment()->getAllAttributes();
+
+        unset($transaction_fields["payment"]);
+        $params = array_merge($transaction_fields, $card_fields);
+        $params["amount"] = (string) number_format( (float) $params["amount"], 2, '.', '');
+
+        // Remove Null and Update Booleans
+        foreach( $params as $attr => $value ){
+            if($value == null)
+                unset($params[$attr]);
+            else if(is_bool($params[$attr])){
+                if($params[$attr])
+                    $params[$attr] = 'true';
+                else
+                    $params[$attr] = 'false';
+            }
+        }
+
         $remote_url = self::getApiUrl().'transactions';
-        return http_helper::post(self::getUsername(),self::getPassword(),$remote_url,$payment);
+        return http_helper::post(self::getUsername(),self::getPassword(),$remote_url,$params);
     }
 
 }
