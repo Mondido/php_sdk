@@ -13,6 +13,8 @@ class Mondido
     private $secret;
     private $apiUrl;
     private $algorithm;
+
+    private $hostedWindowUrl = 'https://pay.mondido.com/v1/form';
     /*
      * parse POST JSON data from WebHook
      */
@@ -32,6 +34,23 @@ class Mondido
         } else {
             $this->$attribute = Configuration::$app_settings[snakify($attribute)];
         }
+    }
+
+    public function generatePostForm($payload)
+    {
+        $form = '<form method="post" action="' . $this->hostedWindowUrl . '">';
+        $form .= '<input type="hidden" name="merchant_id" value="' . $this->username . '">';
+
+        foreach ($payload as $dataType => $data) {
+            if (is_array($data)) {
+                $data = json_encode($data);
+            }
+            $form .= '<input type="hidden" name="' . $dataType . '" value="' . $data . '">';
+        }
+
+
+        $form .= '</form>';
+        return $form;
     }
 
     public function refund()
