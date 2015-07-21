@@ -38,7 +38,7 @@ class Mondido
 
     public function generatePostForm($payload)
     {
-        $form = '<form method="post" action="' . $this->hostedWindowUrl . '">';
+        $form = '<form id="mondido-redirect" method="post" action="' . $this->hostedWindowUrl . '">';
         $form .= '<input type="hidden" name="merchant_id" value="' . $this->username . '">';
 
         foreach ($payload as $dataType => $data) {
@@ -48,8 +48,15 @@ class Mondido
             $form .= '<input type="hidden" name="' . $dataType . '" value="' . $data . '">';
         }
 
-
+        $form .= '<input type="submit" value="submit">';
         $form .= '</form>';
+
+        // The JS to make this work
+        $form .=
+            '<script>' .
+                'document.getElementById("mondido-redirect").submit()' .
+            '</script>';
+        
         return $form;
     }
 
