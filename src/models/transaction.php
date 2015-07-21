@@ -4,40 +4,104 @@ use Mondido\Settings\Configuration;
 
 class Transaction extends BaseModel
 {
-    private $merchant_id;
-    private $amount;
-    private $payment_ref;
-    private $payment;
-    private $test;
-    private $metadata;
-    private $currency;
-    private $store_card;
-    private $plan_id;
-    private $customer_ref;
-    private $hash;
-    private $webhook;
-    private $encrypted;
-    private $process;
-    private $success_url;
-    private $error_url;
+//    private $merchant_id;
+//    private $amount;
+//    private $payment_ref;
+//    private $payment;
+//    private $test;
+//    private $metadata;
+//    private $currency;
+//    private $store_card;
+//    private $plan_id;
+//    private $customer_ref;
+//    private $hash;
+//    private $webhook;
+//    private $encrypted;
+//    private $process;
+//    private $success_url;
+//    private $error_url;
+    private $attributes = array();
 
-    public function __construct($arguments)
+    protected $allowedAttributes = [
+        'merchant_id',
+        'amount',
+        'payment_ref',
+        'payment',
+        'test',
+        'metadata',
+        'currency',
+        'store_card',
+        'plan_id',
+        'customer_ref',
+        'hash',
+        'webhook',
+        'encrypted',
+        'process',
+        'success_url',
+        'error_url',
+    ];
+
+    private $cardAttributes = [
+        "card_number",
+        "card_holder",
+        "card_expiry",
+        "card_cvv",
+        "card_type",
+    ];
+
+    public function __construct($merchantId, $secret, $arguments, $paymentRef = null, $customerRef = null)
     {
         parent::__construct();
 
+        $this->attributes['merchant_id'] = $merchantId;
+        $this->attributes['payment_ref'] = $paymentRef;
+        $this->attributes['customer_ref'] = $customerRef;
+        $this->attributes['secret'] = $secret;
+
+        $payment = [];
+
         foreach ($arguments as $attribute => $value) {
-            $methodName = "set" . $attribute;
-            $this->$methodName($value);
+//            $methodName = "set" . $attribute;
+//            $this->$methodName($value);
+            $attribute = snakify($attribute);
+            if(in_array($attribute, $this->cardAttributes)) {
+                $payment[$attribute] = $value;
+            }
+
+            if(in_array($attribute, $this->allowedAttributes)) {
+                $this->attributes[$attribute] = $value;
+            }
         }
 
-        if (!isset($arguments["MerchantId"])) {
-            $this->setMerchantId(Configuration::$app_settings['username']);
+        if (! ($this->paymentRef && $this->customerRef)) {
+            throw new \Exception("You must provide both a payment reference and a customer reference to make a transaction");
         }
 
-        if (!isset($arguments["Hash"])) {
-            $this->setHash();
+        if (!empty($payment) && is_array($payment)) {
+            $this->attributes['payment'] = new CreditCard($payment);
+        }
+
+//        if (!isset($arguments["MerchantId"])) {
+//            $this->setMerchantId(Configuration::$app_settings['username']);
+//        }
+
+        if (!isset($arguments["hash"])) {
+            $this->setHash($secret);
         }
     }
+
+    /**
+     * is utilized for reading data from inaccessible members.
+     *
+     * @param $name string
+     * @return mixed
+     * @link http://php.net/manual/en/language.oop5.overloading.php#language.oop5.overloading.members
+     */
+    public function __get($name)
+    {
+        return $this->attributes[snakify($name)];
+    }
+
 
     public function getMerchantId()
     {
@@ -68,7 +132,6 @@ class Transaction extends BaseModel
     {
         $this->payment_ref = $paymentRef;
     }
-
 
     public function getPayment()
     {
@@ -145,15 +208,15 @@ class Transaction extends BaseModel
         return $this->hash;
     }
 
-    public function setHash($options = array("secret" => null, "algorithm" => null))
+    public function setHash($secret, $algorithm = null)
     {
-        if (!$options["secret"]) {
+        if (!$secret) {
             $secret = Configuration::$app_settings['secret'];
         }
-        if (!$options["algorithm"]) {
+        if (!$algorithm) {
             $algorithm = Configuration::$app_settings['algorithm'];
         }
-        $this->hash = $this->calculateHash($secret, $algorithm);
+        $this->attributes['hash'] = $this->calculateHash($secret, $algorithm);
     }
 
     public function getWebhook()
@@ -223,7 +286,8 @@ class Transaction extends BaseModel
 
     public function getAllAttributes()
     {
-        return get_object_vars($this);
+//        return call_user_func('get_object_vars', $this);
+        return $this->attributes;
     }
 
 }
