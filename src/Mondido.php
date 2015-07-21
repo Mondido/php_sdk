@@ -1,29 +1,73 @@
 <?php
 namespace Mondido;
 
-//
-//require(dirname(__FILE__) . '/HttpHelper.php');
-//require(dirname(__FILE__) . '/request/webhook.php');
-//require(dirname(__FILE__) . '/api/api_base.php');
-//require(dirname(__FILE__) . '/api/transaction.php');
-//require(dirname(__FILE__) . '/api/refund.php');
-//require(dirname(__FILE__) . '/api/stored_card.php');
-//require(dirname(__FILE__) . '/settings/configuration.php');
-//
-//require(dirname(__FILE__) . '/models/base_model.php');
-//require(dirname(__FILE__) . '/models/transaction.php');
-//require(dirname(__FILE__) . '/models/credit_card.php');
+use Mondido\Api\Refund;
+use Mondido\Api\StoredCard;
+use Mondido\Api\Transaction;
+use Mondido\Settings\Configuration;
 
 class Mondido
 {
-
+    private $username;
+    private $password;
+    private $secret;
+    private $apiUrl;
+    private $algorithm;
     /*
      * parse POST JSON data from WebHook
      */
-    public function __construct()
+    public function __construct($username = null, $password = null, $secret = null, $apiUrl = null, $algorithm = null)
     {
+        $this->setIfExists('username', $username);
+        $this->setIfExists('password', $password);
+        $this->setIfExists('secret', $secret);
+        $this->setIfExists('apiUrl', $apiUrl);
+        $this->setIfExists('algorithm', $algorithm);
     }
 
+    private function setIfExists($attribute, $value)
+    {
+        if ($value) {
+            $this->$attribute = $value;
+        } else {
+            $this->$attribute = Configuration::$app_settings[snakify($attribute)];
+        }
+    }
+
+    public function refund()
+    {
+        return new Refund($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
+
+    public function storedCard()
+    {
+        return new storedCard($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
+
+    public function transaction()
+    {
+        return new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
+
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    public function getSecret()
+    {
+        return $this->secret;
+    }
 
     /*
      *Log data to file
