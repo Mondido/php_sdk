@@ -1,0 +1,11 @@
+{
+    "name": "snowfire/mondido-php-sdk",
+    "description": "A fork of the Mondido PHP SDK available on composer",
+    "authors": [
+        {
+            "name": "Leo Sjöberg",
+            "email": "leo@snowfire.net"
+        }
+    ],
+    "require": {}
+}
