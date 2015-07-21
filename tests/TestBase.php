@@ -21,4 +21,13 @@
 
 class TestBase extends PHPUnit_Framework_TestCase {
 
+    protected $api;
+
+    protected function setUp()
+    {
+        $merchantId = null;
+        $password = null;
+        $secret = null;
+        $this->api = new \Mondido\Mondido($merchantId, $password, $secret);
+    }
 }
