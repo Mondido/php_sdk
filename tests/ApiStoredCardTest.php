@@ -8,15 +8,15 @@ use Mondido\Api\StoredCard;
  * Time: 23:37
  * To change this template use File | Settings | File Templates.
  */
-require('TestBase.php');
 
 class ApiStoredCardTest extends TestBase
 {
 
-    public static $card;
+    private $card;
 
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
+        parent::setUp();
         $data = array(
             "card_number" => "4111111111111111",
             "card_holder" => "php sdk",
@@ -26,23 +26,22 @@ class ApiStoredCardTest extends TestBase
             "currency" => "eur",
             "test" => "true"
         );
-        echo "Testing stored_card, setting up a stored_card\n";
-        self::$card = StoredCard::create($data);
+        $this->card = $this->api->storedCard()->create($data);
     }
 
     public function testGetStoredcard()
     {
         echo "Testing stored_card::get\n";
 
-        $res = StoredCard::get(self::$card['id']);
+        $res = $this->api->storedCard()->get($this->card['id']);
         print_r($res);
-        $this->assertEquals($res['id'], self::$card['id']);
+        $this->assertEquals($res['id'], $this->card['id']);
     }
 
     public function testGetStoredcardsLimitOffset()
     {
         echo "Testing stored_card::index\n";
-        $res = StoredCard::index(2, 0);
+        $res = $this->api->storedCard()->index(2, 0);
         print_r($res);
         $this->assertEquals(2, count($res));
     }
@@ -50,7 +49,7 @@ class ApiStoredCardTest extends TestBase
     public function testDeleteStoredcards()
     {
         echo "Testing stored_card::delete\n";
-        $res = StoredCard::delete(self::$card['id']);
+        $res = $this->api->storedCard()->delete($this->card['id']);
         print_r($res);
 
         $this->assertEquals('deleted', $res['status']);
@@ -71,7 +70,7 @@ class ApiStoredCardTest extends TestBase
             "test" => "true"
         );
 
-        $res = StoredCard::create($data);
+        $res = $this->api->storedCard()->create($data);
         print_r($res);
 
         $this->assertEquals($res['card_holder'], $ref);

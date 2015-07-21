@@ -10,16 +10,16 @@ use Mondido\Settings\Configuration;
  * Time: 23:37
  * To change this template use File | Settings | File Templates.
  */
-require('TestBase.php');
 
 class ApiRefundTest extends TestBase
 {
 
-    public static $refund;
-    public static $trans;
+    public $refund;
+    public $trans;
 
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
+        parent::setUp();
         $ref = rand(10, 100000);
         $payment = array(
             "card_number" => "4111111111111111",
@@ -27,29 +27,30 @@ class ApiRefundTest extends TestBase
             "card_expiry" => "0116",
             "card_cvv" => "200",
             "card_type" => "VISA",
-            "amount" => "10.00",
+            "amount" => "20.00",
+            "customer_ref" => 1,
             "payment_ref" => $ref,
             "currency" => "eur",
             "test" => "true",
-            "hash" => md5(Configuration::$app_settings['username'] . $ref . "10.00" . Configuration::$app_settings['secret'])
+//            "hash" => md5($this->api->getUsername() . $ref . "10.00" . $this->api->getSecret())
         );
         echo "Testing refund, setting up a transaction\n";
-        self::$trans = Transaction::create($payment);
+        $this->trans = $this->api->transaction()->create($payment);
         $data = array(
-            "transaction_id" => self::$trans['id'],
+            "transaction_id" => $this->trans['id'],
             "amount" => "10.00",
             "reason" => "oops"
         );
         echo "Testing refund, setting up a refund\n";
-        self::$refund = Refund::create($data);
+        $this->refund = $this->api->refund()->create($data);
     }
 
     public function testGetRefund()
     {
         echo "Testing refund::get\n";
 
-        $res = Refund::get(self::$refund['id']);
-        $this->assertEquals($res['id'], self::$refund['id']);
+        $res = $this->api->refund()->get($this->refund['id']);
+        $this->assertEquals($res['id'], $this->refund['id']);
     }
 
     public function testCreateRefund()
@@ -58,13 +59,12 @@ class ApiRefundTest extends TestBase
         $ref = rand(10, 100000);
 
         $data = array(
-            "transaction_id" => self::$trans['id'],
+            "transaction_id" => $this->trans['id'],
             "amount" => "10.00",
             "reason" => $ref
         );
 
-        $res = Refund::create($data);
-
+        $res = $this->api->refund()->create($data);
         $this->assertEquals($res['reason'], $ref);
     }
 

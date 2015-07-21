@@ -16,21 +16,21 @@ class ApiBaseTest extends TestBase
     {
         echo "Testing api_base::getApiUrl()\n";
 
-        $url = \Mondido\Api\ApiBase::getApiUrl();
+        $url = $this->api->getApiUrl();
         $this->assertEquals('https://api.mondido.com/v1/', $url);
     }
 
     public function testPassword()
     {
         echo "Testing api_base::getPassword()\n";
-        $val = \Mondido\Api\ApiBase::getPassword();
+        $val = $this->api->getPassword();
         $this->assertEquals('custom00', $val);
     }
 
     public function testUsername()
     {
         echo "Testing api_base::getUsername()\n";
-        $val = \Mondido\Api\ApiBase::getUsername();
+        $val = $this->api->getUsername();
         $this->assertEquals('3', $val);
     }
 

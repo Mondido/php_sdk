@@ -12,7 +12,6 @@ use Mondido\Settings\Configuration;
 use Mondido\Models\Transaction as transaction_model;
 use Mondido\Models\CreditCard;
 
-require('TestBase.php');
 
 class ApiTransactionTest extends TestBase
 {
@@ -20,17 +19,31 @@ class ApiTransactionTest extends TestBase
     public function testGetTransaction()
     {
         echo "Testing transaction::get\n";
-        $tid = 29621;
+        $ref = rand(10, 100000);
+        $testTransaction = $this->api->transaction()->create(array(
+            "card_number" => "4111111111111111",
+            "card_holder" => "php sdk",
+            "card_expiry" => "0116",
+            "card_cvv" => "200",
+            "card_type" => "VISA",
+            "amount" => "20.00",
+            "customer_ref" => 1,
+            "payment_ref" => $ref,
+            "currency" => "eur",
+            "test" => "true",
+        ));
+        $tid = $testTransaction['id'];
 
-        $transaction = Transaction::get($tid);
+        $transaction = $this->api->transaction()->get($tid);
         print_r($transaction);
         $this->assertEquals($tid, $transaction['id']);
+        $this->assertEquals($testTransaction, $transaction);
     }
 
     public function testGetTransactionsLimitOffset()
     {
         echo "Testing transaction::index\n";
-        $transactions = Transaction::index(10, 0);
+        $transactions = $this->api->transaction()->index(10, 0);
         print_r($transactions);
         $this->assertEquals(10, count($transactions));
     }
@@ -40,10 +53,10 @@ class ApiTransactionTest extends TestBase
         echo "Testing transaction::create\n";
         $ref = "MyOrderId" . (string)rand(10, 100000);
 
-        $transaction = new transaction_model(array(
-            #"MerchantId" => "",
+        $transaction = array(
             "Amount" => 10,
             "PaymentRef" => $ref,
+            "customerRef" => 1,
             "Payment" => new CreditCard(array(
                 "Holder" => "PHP SDK Test",
                 "Cvv" => "200",
@@ -58,8 +71,6 @@ class ApiTransactionTest extends TestBase
             "Currency" => "usd",
             "StoreCard" => true,
             "PlanId" => '',
-            #"CustomerRef" => "",
-            #"Hash" => "",
             "Webhook" => json_encode(array(
                 "trigger" => "payment_success",
                 "email" => "myname@domain.com"
@@ -68,10 +79,12 @@ class ApiTransactionTest extends TestBase
             "Process" => true,
             "SuccessUrl" => "",
             "ErrorUrl" => ""
-        ));
+        );
 
-        $response = Transaction::create($transaction);
+        $response = $this->api->transaction()->create($transaction);
         print_r($response);
+
+
 
         $this->assertEquals($ref, $response['payment_ref']);
     }
