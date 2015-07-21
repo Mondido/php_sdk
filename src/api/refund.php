@@ -11,16 +11,15 @@ use Mondido\HttpHelper;
  */
 class Refund extends ApiBase
 {
-
-    public static function get($id)
+    public function get($id)
     {
-        $remote_url = self::getApiUrl() . 'refunds/' . $id;
-        return HttpHelper::get(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('refunds/' . $id);
+        return HttpHelper::get($this->username, $this->password, $remote_url);
     }
 
-    public static function create($data)
+    public function create($data)
     {
-        $remote_url = self::getApiUrl() . 'refunds';
-        return HttpHelper::post(self::getUsername(), self::getPassword(), $remote_url, $data);
+        $remote_url = $this->endpoint('refunds');
+        return HttpHelper::post($this->username, $this->password, $remote_url, $data);
     }
 }

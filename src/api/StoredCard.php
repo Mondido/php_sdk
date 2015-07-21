@@ -12,29 +12,29 @@ use Mondido\HttpHelper;
  */
 class StoredCard extends ApiBase
 {
-    //returns a sc
-    public static function get($id)
+
+    public function get($id)
     {
-        $remote_url = self::getApiUrl() . 'stored_cards/' . $id;
-        return HttpHelper::get(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('stored_cards/' . $id);
+        return HttpHelper::get($this->username, $this->password, $remote_url);
     }
 
-    public static function index($limit, $offset)
+    public function index($limit, $offset)
     {
-        $remote_url = self::getApiUrl() . 'stored_cards/?limit=' . $limit . '&offset=' . $offset;
-        return HttpHelper::get(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('stored_cards/?limit=' . $limit . '&offset=' . $offset);
+        return HttpHelper::get($this->username, $this->password, $remote_url);
     }
 
-    public static function create($card)
+    public function create($card)
     {
-        $remote_url = self::getApiUrl() . 'stored_cards';
-        return HttpHelper::post(self::getUsername(), self::getPassword(), $remote_url, $card);
+        $remote_url = $this->endpoint('stored_cards');
+        return HttpHelper::post($this->username, $this->password, $remote_url, $card);
     }
 
-    public static function delete($id)
+    public function delete($id)
     {
-        $remote_url = self::getApiUrl() . 'stored_cards/' . $id;
-        return HttpHelper::delete(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('stored_cards/' . $id);
+        return HttpHelper::delete($this->username, $this->password, $remote_url);
     }
 
 }

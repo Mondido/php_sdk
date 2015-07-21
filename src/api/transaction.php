@@ -3,34 +3,33 @@
 use Mondido\HttpHelper;
 
 
-/**
- * Created by JetBrains PhpStorm.
- * User: robertpohl
- * Date: 12/06/14
- * Time: 13:48
- * To change this template use File | Settings | File Templates.
- */
 class Transaction extends ApiBase
 {
     //returns a transaction
-    public static function get($id)
+    public function get($id)
     {
-        $remote_url = self::getApiUrl() . 'transactions/' . $id;
-        return HttpHelper::get(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('transactions/' . $id);
+        return HttpHelper::get($this->username, $this->password, $remote_url);
     }
 
     /*
      * list transactions with a offset and a limit
      */
-    public static function index($limit, $offset)
+    public function index($limit, $offset)
     {
-        $remote_url = self::getApiUrl() . 'transactions/?limit=' . $limit . '&offset=' . $offset;
-        return HttpHelper::get(self::getUsername(), self::getPassword(), $remote_url);
+        $remote_url = $this->endpoint('transactions/?limit=' . $limit . '&offset=' . $offset);
+        return HttpHelper::get($this->username, $this->password, $remote_url);
     }
 
-    public static function create(\Mondido\Models\Transaction $transaction)
+    public function create($transaction)
     {
+        // Make a check to see if we passed in an actual transaction, or just values for the transaction
+        if (!($transaction instanceof \Mondido\Models\Transaction)) {
+            $transaction = new \Mondido\Models\Transaction($this->username, $this->secret, $transaction);
+        }
+
         $transaction_fields = $transaction->getAllAttributes();
+//        $card_fields = $transaction->getPayment()->getAllAttributes();    // <-- We can't call a method on an array. getPayment returns an array(or previously nothing)
         $card_fields = $transaction->getPayment()->getAllAttributes();
 
         unset($transaction_fields["payment"]);
@@ -52,8 +51,8 @@ class Transaction extends ApiBase
             }
         }
 
-        $remote_url = self::getApiUrl() . 'transactions';
-        return HttpHelper::post(self::getUsername(), self::getPassword(), $remote_url, $params);
+        $remote_url = $this->endpoint('transactions');
+        return HttpHelper::post($this->username, $this->password, $remote_url, $params);
     }
 
 }

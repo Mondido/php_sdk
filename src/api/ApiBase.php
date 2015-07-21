@@ -13,18 +13,42 @@ use Mondido\Settings\Configuration;
 
 class ApiBase
 {
-    public static function getApiUrl()
+
+    protected $username;
+    protected $password;
+    protected $secret;
+    protected $apiUrl;
+
+    /**
+     * StoredCard constructor.
+     * @param $username
+     * @param $password
+     * @param $apiUrl
+     */
+    public function __construct($username, $password, $secret, $apiUrl)
     {
-        return Configuration::$app_settings['api_url'];
+        $this->username = $username;
+        $this->password = $password;
+        $this->secret = $secret;
+        $this->apiUrl = $apiUrl;
     }
 
-    public static function getUsername()
+    public function endpoint($url)
     {
-        return Configuration::$app_settings['username'];
+        return $this->apiUrl . $url;
     }
-
-    public static function getPassword()
-    {
-        return Configuration::$app_settings['password'];
-    }
+//    public static function getApiUrl()
+//    {
+//        return Configuration::$app_settings['api_url'];
+//    }
+//
+//    public static function getUsername()
+//    {
+//        return Configuration::$app_settings['username'];
+//    }
+//
+//    public static function getPassword()
+//    {
+//        return Configuration::$app_settings['password'];
+//    }
 }
