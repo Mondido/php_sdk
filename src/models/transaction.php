@@ -22,7 +22,7 @@ class Transaction extends BaseModel
 //    private $error_url;
     private $attributes = array();
 
-    protected $allowedAttributes = [
+    protected $allowedAttributes = array(
         'merchant_id',
         'amount',
         'payment_ref',
@@ -39,15 +39,15 @@ class Transaction extends BaseModel
         'process',
         'success_url',
         'error_url',
-    ];
+    );
 
-    private $cardAttributes = [
+    private $cardAttributes = array(
         "card_number",
         "card_holder",
         "card_expiry",
         "card_cvv",
         "card_type",
-    ];
+    );
 
     public function __construct($merchantId, $secret, $arguments, $paymentRef = null, $customerRef = null)
     {
@@ -58,7 +58,7 @@ class Transaction extends BaseModel
         $this->attributes['customer_ref'] = $customerRef;
         $this->attributes['secret'] = $secret;
 
-        $payment = [];
+        $payment = array();
 
         foreach ($arguments as $attribute => $value) {
 //            $methodName = "set" . $attribute;
