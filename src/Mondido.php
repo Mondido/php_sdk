@@ -36,8 +36,46 @@ class Mondido
         }
     }
 
+    public function generateHash($paymentRef, $customerRef, $amount, $currency, $test = null)
+    {
+        $recipe = (string) $this->username;
+        $recipe .= (string )$paymentRef;
+        $recipe .= (string)$customerRef;
+        $recipe .= (string)number_format((float)$amount, 2, '.', '');
+        $recipe .= (string)$currency;
+        $recipe .= $test ? "test" : "";
+        $recipe .= $this->secret;
+
+        $algorithm = $this->algorithm;
+
+        return $algorithm($recipe);
+    }
+
     public function generatePostForm($payload)
     {
+        if (!isset($payload['hash'])) {
+            $test = null;
+            if (isset($payload['test'])) {
+                $test = $payload['test'];
+            }
+
+            $paymentRef = $payload['payment_ref'];
+            $customerRef = $payload['customer_ref'];
+            $amount = $payload['amount'];
+            $currency = $payload['currency'];
+
+            if (! (
+                isset ($paymentRef) &&
+                isset ($customerRef) &&
+                isset ($amount) &&
+                isset ($currency)
+            )) {
+                throw new \Exception('You need to define payment and customer reference, amount and currency to generate a correct hash');
+            }
+
+            $payload['hash'] = $this->generateHash($paymentRef, $customerRef, $amount, $currency, $test);
+        }
+
         $form = '<form id="mondido-redirect" method="post" action="' . $this->hostedWindowUrl . '">';
         $form .= '<input type="hidden" name="merchant_id" value="' . $this->username . '">';
 
@@ -56,7 +94,7 @@ class Mondido
             '<script>' .
                 'document.getElementById("mondido-redirect").submit()' .
             '</script>';
-        
+
         return $form;
     }
 
