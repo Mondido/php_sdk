@@ -1,8 +1,8 @@
 <?php
-namespace mondido\test;
-use mondido\api\refund;
-use mondido\api\transaction;
-use mondido\settings\configuration;
+use Mondido\Api\Refund;
+use Mondido\Api\Transaction;
+use Mondido\Settings\Configuration;
+
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -10,11 +10,10 @@ use mondido\settings\configuration;
  * Time: 23:37
  * To change this template use File | Settings | File Templates.
  */
+require('TestBase.php');
 
-
-require_once(dirname(__FILE__) . '/test_base.php');
-
-class api_transaction_Test extends test_base {
+class ApiRefundTest extends TestBase
+{
 
     public static $refund;
     public static $trans;
@@ -32,27 +31,29 @@ class api_transaction_Test extends test_base {
             "payment_ref" => $ref,
             "currency" => "eur",
             "test" => "true",
-            "hash" => md5(configuration::$app_settings['username'].$ref."10.00".configuration::$app_settings['secret'])
+            "hash" => md5(Configuration::$app_settings['username'] . $ref . "10.00" . Configuration::$app_settings['secret'])
         );
         echo "Testing refund, setting up a transaction\n";
-        self::$trans = transaction::create($payment);
+        self::$trans = Transaction::create($payment);
         $data = array(
             "transaction_id" => self::$trans['id'],
             "amount" => "10.00",
             "reason" => "oops"
         );
         echo "Testing refund, setting up a refund\n";
-        self::$refund = refund::create($data);
+        self::$refund = Refund::create($data);
     }
 
-    public function testGetRefund(){
+    public function testGetRefund()
+    {
         echo "Testing refund::get\n";
 
-        $res = refund::get(self::$refund['id']);
+        $res = Refund::get(self::$refund['id']);
         $this->assertEquals($res['id'], self::$refund['id']);
     }
 
-    public function testCreateRefund(){
+    public function testCreateRefund()
+    {
         echo "Testing refund::create\n";
         $ref = rand(10, 100000);
 
@@ -62,7 +63,7 @@ class api_transaction_Test extends test_base {
             "reason" => $ref
         );
 
-        $res = refund::create($data);
+        $res = Refund::create($data);
 
         $this->assertEquals($res['reason'], $ref);
     }

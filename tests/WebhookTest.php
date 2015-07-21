@@ -7,20 +7,21 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace mondido\test;
-use mondido\request\webhook;
-use mondido\api\transaction;
+use Mondido\Request\webhook;
+use Mondido\Api\Transaction;
 
-require_once(dirname(__FILE__) . '/test_base.php');
+require('TestBase.php');
 
-class webhook_Test extends test_base {
+class WebhookTest extends TestBase
+{
 
     /**
      * @covers webhook::get
      */
-    public function testGetwebhook(){
+    public function testGetwebhook()
+    {
         echo "Testing webhook::get\n";
-        $transaction = transaction::get(443);
+        $transaction = Transaction::get(443);
         $path = 'wh.json';
         file_put_contents($path, json_encode($transaction));
 

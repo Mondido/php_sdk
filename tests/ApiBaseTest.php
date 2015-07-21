@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -6,29 +7,30 @@
  * Time: 22:44
  * To change this template use File | Settings | File Templates.
  */
-require_once(dirname(__FILE__) . '/test_base.php');
+//require('TestBase.php');
 
-class api_base_Test extends mondido\test\test_base {
+class ApiBaseTest extends TestBase
+{
 
     public function testGetApiUrl()
     {
         echo "Testing api_base::getApiUrl()\n";
 
-        $url = mondido\api\api_base::getApiUrl();
+        $url = \Mondido\Api\ApiBase::getApiUrl();
         $this->assertEquals('https://api.mondido.com/v1/', $url);
     }
 
     public function testPassword()
     {
         echo "Testing api_base::getPassword()\n";
-        $val = mondido\api\api_base::getPassword();
+        $val = \Mondido\Api\ApiBase::getPassword();
         $this->assertEquals('custom00', $val);
     }
 
     public function testUsername()
     {
         echo "Testing api_base::getUsername()\n";
-        $val = mondido\api\api_base::getUsername();
+        $val = \Mondido\Api\ApiBase::getUsername();
         $this->assertEquals('3', $val);
     }
 

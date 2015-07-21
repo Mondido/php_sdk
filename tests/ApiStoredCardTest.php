@@ -1,6 +1,6 @@
 <?php
-namespace mondido\test;
-use mondido\api\stored_card;
+use Mondido\Api\StoredCard;
+
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -8,11 +8,10 @@ use mondido\api\stored_card;
  * Time: 23:37
  * To change this template use File | Settings | File Templates.
  */
+require('TestBase.php');
 
-
-require_once(dirname(__FILE__) . '/test_base.php');
-
-class api_transaction_Test extends test_base {
+class ApiStoredCardTest extends TestBase
+{
 
     public static $card;
 
@@ -28,33 +27,37 @@ class api_transaction_Test extends test_base {
             "test" => "true"
         );
         echo "Testing stored_card, setting up a stored_card\n";
-        self::$card = stored_card::create($data);
+        self::$card = StoredCard::create($data);
     }
 
-    public function testGetStoredcard(){
+    public function testGetStoredcard()
+    {
         echo "Testing stored_card::get\n";
 
-        $res = stored_card::get(self::$card['id']);
+        $res = StoredCard::get(self::$card['id']);
         print_r($res);
         $this->assertEquals($res['id'], self::$card['id']);
     }
 
-    public function testGetStoredcardsLimitOffset(){
+    public function testGetStoredcardsLimitOffset()
+    {
         echo "Testing stored_card::index\n";
-        $res = stored_card::index(2,0);
+        $res = StoredCard::index(2, 0);
         print_r($res);
         $this->assertEquals(2, count($res));
     }
 
-    public function testDeleteStoredcards(){
+    public function testDeleteStoredcards()
+    {
         echo "Testing stored_card::delete\n";
-        $res = stored_card::delete(self::$card['id']);
+        $res = StoredCard::delete(self::$card['id']);
         print_r($res);
 
         $this->assertEquals('deleted', $res['status']);
     }
 
-    public function testCreateStoredCard(){
+    public function testCreateStoredCard()
+    {
         echo "Testing stored_card::create\n";
         $ref = rand(10, 100000);
 
@@ -68,7 +71,7 @@ class api_transaction_Test extends test_base {
             "test" => "true"
         );
 
-        $res = stored_card::create($data);
+        $res = StoredCard::create($data);
         print_r($res);
 
         $this->assertEquals($res['card_holder'], $ref);

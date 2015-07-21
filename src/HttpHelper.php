@@ -1,41 +1,45 @@
-<?php namespace mondido;
+<?php namespace Mondido;
 
 
-class http_helper {
+class HttpHelper
+{
 
-    public static function get($uname,$pass,$url){
+    public static function get($uname, $pass, $url)
+    {
         $opts = array(
-            'http'=>array(
-                'method'=>"GET",
+            'http' => array(
+                'method' => "GET",
                 'header' => "Authorization: Basic " . base64_encode("$uname:$pass")
             )
         );
         $context = stream_context_create($opts);
         $file = file_get_contents($url, false, $context);
-        return json_decode($file, TRUE);
+        return json_decode($file, true);
     }
 
-    public static function delete($uname,$pass,$url){
+    public static function delete($uname, $pass, $url)
+    {
         $opts = array(
-            'http'=>array(
-                'method'=>"DELETE",
+            'http' => array(
+                'method' => "DELETE",
                 'header' => "Authorization: Basic " . base64_encode("$uname:$pass")
             )
         );
         $context = stream_context_create($opts);
         $file = file_get_contents($url, false, $context);
-        return json_decode($file, TRUE);
+        return json_decode($file, true);
     }
 
-    public static function post($uname,$pass,$url,$data){
+    public static function post($uname, $pass, $url, $data)
+    {
         $body = http_build_query($data);
         $opts = array(
-            'http'=>array(
-                'method'=>"POST",
+            'http' => array(
+                'method' => "POST",
                 'header' => array(
                     "Authorization: Basic " . base64_encode("$uname:$pass"),
-                     "Content-type: application/x-www-form-urlencoded",
-                     "Content-Length: " . strlen($body)
+                    "Content-type: application/x-www-form-urlencoded",
+                    "Content-Length: " . strlen($body)
                 ),
                 'content' => $body
             )
@@ -54,7 +58,7 @@ class http_helper {
         //execute post
         $result = curl_exec($ch);
 
-        return json_decode($result, TRUE);
+        return json_decode($result, true);
     }
 
 }

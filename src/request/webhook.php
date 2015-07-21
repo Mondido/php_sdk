@@ -7,17 +7,19 @@
  * To change this template use File | Settings | File Templates.
  */
 
-namespace mondido\request;
+namespace Mondido\Request;
 
 
-class webhook {
-    public static function get($data=null){
-        if($data==null){
+class Webhook
+{
+    public static function get($data = null)
+    {
+        if ($data == null) {
             $data = 'php://input';
         }
         $raw_data = file_get_contents($data);
-        if($raw_data != null){
-            return json_decode($raw_data, TRUE);
+        if ($raw_data != null) {
+            return json_decode($raw_data, true);
         }
         return null;
     }

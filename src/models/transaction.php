@@ -1,188 +1,229 @@
-<?php namespace mondido\models;
+<?php namespace Mondido\Models;
 
-use mondido\settings\configuration;
+use Mondido\Settings\Configuration;
 
-class transaction extends base_model {
-	private $merchant_id;
-	private $amount;
-	private $payment_ref;
-	private $payment;
-	private $test;
-	private $metadata;
-	private $currency;
-	private $store_card;
-	private $plan_id;
-	private $customer_ref;
-	private $hash;
-	private $webhook;
-	private $encrypted;
-	private $process;
-	private $success_url;
-	private $error_url;
+class Transaction extends BaseModel
+{
+    private $merchant_id;
+    private $amount;
+    private $payment_ref;
+    private $payment;
+    private $test;
+    private $metadata;
+    private $currency;
+    private $store_card;
+    private $plan_id;
+    private $customer_ref;
+    private $hash;
+    private $webhook;
+    private $encrypted;
+    private $process;
+    private $success_url;
+    private $error_url;
 
-	public function __construct($arguments){
-		parent::__construct();
+    public function __construct($arguments)
+    {
+        parent::__construct();
 
-		foreach ($arguments as $attribute => $value)
-		{
-		    $methodName = "set" . $attribute;
-		    $this->$methodName($value);
-		}
+        foreach ($arguments as $attribute => $value) {
+            $methodName = "set" . $attribute;
+            $this->$methodName($value);
+        }
 
-		if(!isset($arguments["MerchantId"]))
-			$this->setMerchantId( configuration::$app_settings['username'] );
+        if (!isset($arguments["MerchantId"])) {
+            $this->setMerchantId(Configuration::$app_settings['username']);
+        }
 
-		if(!isset($arguments["Hash"]))
-			$this->setHash();
-	}
+        if (!isset($arguments["Hash"])) {
+            $this->setHash();
+        }
+    }
 
-	public function getMerchantId(){
-		return $this->merchant_id;
-	}
+    public function getMerchantId()
+    {
+        return $this->merchant_id;
+    }
 
-	public function setMerchantId($merchantId){
-		$this->merchant_id = $merchantId;
-	}
+    public function setMerchantId($merchantId)
+    {
+        $this->merchant_id = $merchantId;
+    }
 
-	public function getAmount(){
-		return $this->amount;
-	}
+    public function getAmount()
+    {
+        return $this->amount;
+    }
 
-	public function setAmount($amount){
-		$this->amount = $amount;
-	}
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
 
-	public function getPaymentRef(){
-		return $this->payment_ref;
-	}
+    public function getPaymentRef()
+    {
+        return $this->payment_ref;
+    }
 
-	public function setPaymentRef($paymentRef){
-		$this->payment_ref = $paymentRef;
-	}
+    public function setPaymentRef($paymentRef)
+    {
+        $this->payment_ref = $paymentRef;
+    }
 
 
-	public function getPayment(){
-		return $this->payment;
-	}
+    public function getPayment()
+    {
+        return $this->payment;
+    }
 
-	public function setPayment($payment){
-		$this->payment = $payment;
-	}
+    public function setPayment($payment)
+    {
+        $this->payment = $payment;
+    }
 
-	public function getTest(){
-		return $this->test;
-	}
+    public function getTest()
+    {
+        return $this->test;
+    }
 
-	public function setTest($test){
-		$this->test = $test;
-	}
+    public function setTest($test)
+    {
+        $this->test = $test;
+    }
 
-	public function getMetadata(){
-		return $this->metadata;
-	}
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
 
-	public function setMetadata($metadata){
-		$this->metadata = $metadata;
-	}
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+    }
 
-	public function getCurrency(){
-		return $this->currency;
-	}
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
 
-	public function setCurrency($currency){
-		$this->currency = $currency;
-	}
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
 
-	public function getStoreCard(){
-		return $this->store_card;
-	}
+    public function getStoreCard()
+    {
+        return $this->store_card;
+    }
 
-	public function setStoreCard($storeCard){
-		$this->store_card = $storeCard;
-	}
+    public function setStoreCard($storeCard)
+    {
+        $this->store_card = $storeCard;
+    }
 
-	public function getPlanId(){
-		return $this->plan_id;
-	}
+    public function getPlanId()
+    {
+        return $this->plan_id;
+    }
 
-	public function setPlanId($planId){
-		$this->plan_id = $planId;
-	}
+    public function setPlanId($planId)
+    {
+        $this->plan_id = $planId;
+    }
 
-	public function getCustomerRef(){
-		return $this->customer_ref;
-	}
+    public function getCustomerRef()
+    {
+        return $this->customer_ref;
+    }
 
-	public function setCustomerRef($customerRef){
-		$this->customer_ref = $customerRef;
-	}
+    public function setCustomerRef($customerRef)
+    {
+        $this->customer_ref = $customerRef;
+    }
 
-	public function getHash(){
-		return $this->hash;
-	}
+    public function getHash()
+    {
+        return $this->hash;
+    }
 
-	public function setHash($options=array("secret" => null, "algorithm" => null)){
-		if(!$options["secret"]) $secret = configuration::$app_settings['secret'];
-		if(!$options["algorithm"]) $algorithm = configuration::$app_settings['algorithm'];
-		$this->hash = $this->calculateHash($secret, $algorithm);
-	}
+    public function setHash($options = array("secret" => null, "algorithm" => null))
+    {
+        if (!$options["secret"]) {
+            $secret = Configuration::$app_settings['secret'];
+        }
+        if (!$options["algorithm"]) {
+            $algorithm = Configuration::$app_settings['algorithm'];
+        }
+        $this->hash = $this->calculateHash($secret, $algorithm);
+    }
 
-	public function getWebhook(){
-		return $this->webhook;
-	}
+    public function getWebhook()
+    {
+        return $this->webhook;
+    }
 
-	public function setWebhook($webhook){
-		$this->webhook = $webhook;
-	}
+    public function setWebhook($webhook)
+    {
+        $this->webhook = $webhook;
+    }
 
-	public function getEncrypted(){
-		return $this->encrypted;
-	}
+    public function getEncrypted()
+    {
+        return $this->encrypted;
+    }
 
-	public function setEncrypted($encrypted){
-		$this->encrypted = $encrypted;
-	}
+    public function setEncrypted($encrypted)
+    {
+        $this->encrypted = $encrypted;
+    }
 
-	public function getProcess(){
-		return $this->process;
-	}
+    public function getProcess()
+    {
+        return $this->process;
+    }
 
-	public function setProcess($process){
-		$this->process = $process;
-	}
+    public function setProcess($process)
+    {
+        $this->process = $process;
+    }
 
-	public function getSuccessUrl(){
-		return $this->success_url;
-	}
+    public function getSuccessUrl()
+    {
+        return $this->success_url;
+    }
 
-	public function setSuccessUrl($successUrl){
-		$this->success_url = $successUrl;
-	}
+    public function setSuccessUrl($successUrl)
+    {
+        $this->success_url = $successUrl;
+    }
 
-	public function getErrorUrl(){
-		return $this->error_url;
-	}
+    public function getErrorUrl()
+    {
+        return $this->error_url;
+    }
 
-	public function setErrorUrl($errorUrl){
-		$this->error_url = $errorUrl;
-	}
+    public function setErrorUrl($errorUrl)
+    {
+        $this->error_url = $errorUrl;
+    }
 
-	# Custom
+    # Custom
 
-	private function calculateHash($secret, $algorithm){
-		$recipe = (string) $this->getMerchantId();
-		$recipe .= (string )$this->getPaymentRef();
-		$recipe .= (string) $this->getCustomerRef();
-		$recipe .= (string) number_format( (float) $this->getAmount(), 2, '.', '');
-		$recipe .= (string) $this->getCurrency();
-		$recipe .= ($this->getTest()) ? "test" : "";
-		$recipe .= $secret;
+    private function calculateHash($secret, $algorithm)
+    {
+        $recipe = (string)$this->getMerchantId();
+        $recipe .= (string )$this->getPaymentRef();
+        $recipe .= (string)$this->getCustomerRef();
+        $recipe .= (string)number_format((float)$this->getAmount(), 2, '.', '');
+        $recipe .= (string)$this->getCurrency();
+        $recipe .= ($this->getTest()) ? "test" : "";
+        $recipe .= $secret;
 
-		return $algorithm($recipe);
-	}
+        return $algorithm($recipe);
+    }
 
-	public function getAllAttributes(){
-		return get_object_vars($this);
-	}
+    public function getAllAttributes()
+    {
+        return get_object_vars($this);
+    }
 
 }
