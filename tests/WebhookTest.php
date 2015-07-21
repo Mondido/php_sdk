@@ -10,7 +10,6 @@
 use Mondido\Request\webhook;
 use Mondido\Api\Transaction;
 
-require('TestBase.php');
 
 class WebhookTest extends TestBase
 {
@@ -21,7 +20,19 @@ class WebhookTest extends TestBase
     public function testGetwebhook()
     {
         echo "Testing webhook::get\n";
-        $transaction = Transaction::get(443);
+        $ref = mt_rand(10, 100000);
+        $transaction = $this->api->transaction()->create(array(
+            "card_number" => "4111111111111111",
+            "card_holder" => "php sdk",
+            "card_expiry" => "0116",
+            "card_cvv" => "200",
+            "card_type" => "VISA",
+            "amount" => "20.00",
+            "customer_ref" => 1,
+            "payment_ref" => $ref,
+            "currency" => "eur",
+            "test" => "true",
+        ));
         $path = 'wh.json';
         file_put_contents($path, json_encode($transaction));
 
