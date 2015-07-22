@@ -53,6 +53,12 @@ class Mondido
 
     public function generatePostForm($payload)
     {
+        if (!isset ($payload['amount'])) {
+            throw new \Exception('You need to specify an amount');
+        }
+
+        $payload['amount'] = number_format((float)$payload['amount'], 2, '.', '');
+
         if (!isset($payload['hash'])) {
             $test = null;
             if (isset($payload['test'])) {
