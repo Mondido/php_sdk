@@ -1,6 +1,7 @@
 <?php
 namespace Mondido;
 
+use Mondido\Api\Customer;
 use Mondido\Api\Refund;
 use Mondido\Api\StoredCard;
 use Mondido\Api\Transaction;
@@ -14,6 +15,11 @@ class Mondido
     private $apiUrl;
     private $algorithm;
 
+    public $refund;
+    public $storedCard;
+    public $transaction;
+    public $customer;
+
     private $hostedWindowUrl = 'https://pay.mondido.com/v1/form';
     /*
      * parse POST JSON data from WebHook
@@ -25,8 +31,27 @@ class Mondido
         $this->setIfExists('secret', $secret);
         $this->setIfExists('apiUrl', $apiUrl);
         $this->setIfExists('algorithm', $algorithm);
+
+        $this->refund = new Refund($this->username, $this->password, $this->secret, $this->apiUrl);
+        $this->storedCard = new storedCard($this->username, $this->password, $this->secret, $this->apiUrl);
+        $this->transaction = new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
+        $this->customer = new Customer($this->username, $this->password, $this->secret, $this->apiUrl);
     }
 
+    public function refund()
+    {
+        return new Refund($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
+
+    public function storedCard()
+    {
+        return new storedCard($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
+
+    public function transaction()
+    {
+        return new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
+    }
     private function setIfExists($attribute, $value)
     {
         if ($value) {
@@ -104,20 +129,6 @@ class Mondido
         return $form;
     }
 
-    public function refund()
-    {
-        return new Refund($this->username, $this->password, $this->secret, $this->apiUrl);
-    }
-
-    public function storedCard()
-    {
-        return new storedCard($this->username, $this->password, $this->secret, $this->apiUrl);
-    }
-
-    public function transaction()
-    {
-        return new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
-    }
 
     public function getApiUrl()
     {
