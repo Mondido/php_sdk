@@ -13,4 +13,11 @@ class Plan extends ApiBase
 
         return HttpHelper::get($this->username, $this->password, $remote_url);
     }
+
+    public function update($id, array $params)
+    {
+        $remote_url = $this->endpoint('plans/'.$id);
+
+        return HttpHelper::put($this->username, $this->password, $remote_url, $params);
+    }
 }
