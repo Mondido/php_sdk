@@ -2,8 +2,10 @@
 namespace Mondido;
 
 use Mondido\Api\Customer;
+use Mondido\Api\Plan;
 use Mondido\Api\Refund;
 use Mondido\Api\StoredCard;
+use Mondido\Api\Subscription;
 use Mondido\Api\Transaction;
 use Mondido\Settings\Configuration;
 
@@ -36,6 +38,8 @@ class Mondido
         $this->storedCard = new storedCard($this->username, $this->password, $this->secret, $this->apiUrl);
         $this->transaction = new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
         $this->customer = new Customer($this->username, $this->password, $this->secret, $this->apiUrl);
+        $this->subscription = new Subscription($this->username, $this->password, $this->secret, $this->apiUrl);
+        $this->plan = new Plan($this->username, $this->password, $this->secret, $this->apiUrl);
     }
 
     public function refund()
