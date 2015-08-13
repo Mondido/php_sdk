@@ -29,7 +29,6 @@ class Transaction extends ApiBase
         }
 
         $transaction_fields = $transaction->getAllAttributes();
-//        $card_fields = $transaction->getPayment()->getAllAttributes();    // <-- We can't call a method on an array. getPayment returns an array(or previously nothing)
         $card_fields = $transaction->getPayment()->getAllAttributes();
 
         unset($transaction_fields["payment"]);

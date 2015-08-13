@@ -45,12 +45,35 @@ class HttpHelper
             )
         );
 
+//        $context = stream_context_create($opts);
+//        $result = file_get_contents($url, false, $context);
+//        return json_decode($result, true);
+
 
         $ch = curl_init();
 
         //set the url, number of POST vars, POST data
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, count($body));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+        curl_setopt($ch, CURLOPT_USERPWD, "$uname:$pass");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        //execute post
+        $result = curl_exec($ch);
+
+        return json_decode($result, true);
+    }
+
+    public static function put($uname, $pass, $url, $data)
+    {
+        $body = http_build_query($data);
+
+        $ch = curl_init();
+
+        //set the url, number of POST vars, POST data
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
         curl_setopt($ch, CURLOPT_USERPWD, "$uname:$pass");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
