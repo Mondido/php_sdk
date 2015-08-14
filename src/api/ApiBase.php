@@ -9,6 +9,7 @@
 
 namespace Mondido\Api;
 
+use Mondido\HttpHelper;
 use Mondido\Settings\Configuration;
 
 class ApiBase
@@ -18,6 +19,10 @@ class ApiBase
     protected $password;
     protected $secret;
     protected $apiUrl;
+    protected $getMethods = [
+        'get',
+        'delete',
+    ];
 
     /**
      * StoredCard constructor.
@@ -36,6 +41,24 @@ class ApiBase
     public function endpoint($url)
     {
         return $this->apiUrl . $url;
+    }
+
+    public function request($method, $endpoint, array $data = array(), $endpointIsUrl = false)
+    {
+        if ( ! $endpointIsUrl) {
+            $endpoint = $this->endpoint($endpoint);
+        }
+
+        $request = array('\Mondido\HttpHelper', $method);
+
+        $arguments = [
+            $this->username,
+            $this->password,
+            $endpoint,
+            $data,
+        ];
+
+        return call_user_func_array($request, $arguments);
     }
 //    public static function getApiUrl()
 //    {

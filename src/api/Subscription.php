@@ -9,15 +9,16 @@ class Subscription extends ApiBase
 {
     public function all($options = array())
     {
-        $remote_url = $this->endpoint('subscriptions') . '?' . http_build_query($options);
-
-        return HttpHelper::get($this->username, $this->password, $remote_url);
+        return $this->request('get', 'subscriptions', $options);
     }
 
     public function update($id, array $params)
     {
-        $remote_url = $this->endpoint('subscriptions/'.$id);
+        return $this->request('put', 'subscriptions/'.$id, $params);
+    }
 
-        return HttpHelper::put($this->username, $this->password, $remote_url, $params);
+    public function get($id)
+    {
+        return $this->request('get', 'subscriptions/'.$id);
     }
 }

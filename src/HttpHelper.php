@@ -4,8 +4,12 @@
 class HttpHelper
 {
 
-    public static function get($uname, $pass, $url)
+    public static function get($uname, $pass, $url, array $data = null)
     {
+        if ($data) {
+            $url = $url.'?'.http_build_query($data);
+        }
+
         $opts = array(
             'http' => array(
                 'method' => "GET",
@@ -17,8 +21,12 @@ class HttpHelper
         return json_decode($file, true);
     }
 
-    public static function delete($uname, $pass, $url)
+    public static function delete($uname, $pass, $url, array $data = null)
     {
+        if ($data) {
+            $url = $url . '?' . http_build_query($data);
+        }
+
         $opts = array(
             'http' => array(
                 'method' => "DELETE",
