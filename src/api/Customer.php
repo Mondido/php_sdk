@@ -28,7 +28,7 @@ class Customer extends ApiBase
     public function create($customer)
     {
         if (!($customer instanceof \Mondido\Models\Customer)) {
-            $customer = new \Mondido\Models\Customer($this->username, $this->secret, $customer);
+            $customer = new \Mondido\Models\Customer($customer);
         }
 
         $params = $customer->getAllAttributes();
@@ -54,7 +54,7 @@ class Customer extends ApiBase
     public function update($customer)
     {
         if (!($customer instanceof \Mondido\Models\Customer)) {
-            $customer = new \Mondido\Models\Customer($this->username, $this->secret, $customer);
+            $customer = new \Mondido\Models\Customer($customer);
         }
 
         $remote_url = $this->endpoint('customers/' . $customer->id);
