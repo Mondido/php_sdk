@@ -21,6 +21,8 @@ class Mondido
     public $storedCard;
     public $transaction;
     public $customer;
+    public $subscription;
+    public $plan;
 
     private $hostedWindowUrl = 'https://pay.mondido.com/v1/form';
     /*
@@ -56,6 +58,7 @@ class Mondido
     {
         return new Transaction($this->username, $this->password, $this->secret, $this->apiUrl);
     }
+
     private function setIfExists($attribute, $value)
     {
         if ($value) {

@@ -28,7 +28,7 @@ class Customer extends ApiBase
     public function create($customer)
     {
         if (!($customer instanceof \Mondido\Models\Customer)) {
-            $customer = new \Mondido\Models\Customer($this->username, $this->secret, $transaction);
+            $customer = new \Mondido\Models\Customer($this->username, $this->secret, $customer);
         }
 
         $params = $customer->getAllAttributes();
