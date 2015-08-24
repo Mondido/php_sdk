@@ -2,7 +2,6 @@
 
 namespace Mondido\Api;
 
-
 use Mondido\HttpHelper;
 
 class Subscription extends ApiBase
@@ -43,6 +42,7 @@ class Subscription extends ApiBase
 
     /**
      * Create a new subscription.
+     * 
      * @param  string $planId
      * @param  int|string $identifier
      * @param  string $identifierType
@@ -50,11 +50,11 @@ class Subscription extends ApiBase
      */
     public function create($planId, $identifier, $identifierType = 'ref')
     {
-        $types = [
+        $types = array(
             'card' => 'stored_card_id',
             'ref' => 'customer_ref',
-            'customer' => 'customer_id'
-        ];
+            'customer' => 'customer_id',
+        );
         
         $type = isset($types[$identifierType]) ? $types[$identifierType] : $identifierType;
 
