@@ -58,10 +58,10 @@ class Subscription extends ApiBase
         
         $type = isset($types[$identifierType]) ? $types[$identifierType] : $identifierType;
 
-        return $this->request('post', 'subscriptions', [
+        return $this->request('post', 'subscriptions', array(
             'plan_id'   => $planId,
             $type       => $identifier,
             'quantity'  => 1,
-        ]);
+        ));
     }
 }
