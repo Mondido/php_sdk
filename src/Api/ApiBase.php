@@ -19,10 +19,10 @@ class ApiBase
     protected $password;
     protected $secret;
     protected $apiUrl;
-    protected $getMethods = [
+    protected $getMethods = array(
         'get',
         'delete',
-    ];
+    );
 
     /**
      * StoredCard constructor.
@@ -51,12 +51,12 @@ class ApiBase
 
         $request = array('\Mondido\HttpHelper', $method);
 
-        $arguments = [
+        $arguments = array(
             $this->username,
             $this->password,
             $endpoint,
             $data,
-        ];
+        );
 
         return call_user_func_array($request, $arguments);
     }
