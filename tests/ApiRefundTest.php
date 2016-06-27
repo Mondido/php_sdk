@@ -1,8 +1,8 @@
 <?php
-namespace mondido\test;
-use mondido\api\refund;
-use mondido\api\transaction;
-use mondido\settings\configuration;
+use Mondido\Api\Refund;
+use Mondido\Api\Transaction;
+use Mondido\Settings\Configuration;
+
 /**
  * Created by JetBrains PhpStorm.
  * User: robertpohl
@@ -11,16 +11,15 @@ use mondido\settings\configuration;
  * To change this template use File | Settings | File Templates.
  */
 
+class ApiRefundTest extends TestBase
+{
 
-require_once(dirname(__FILE__) . '/test_base.php');
+    public $refund;
+    public $trans;
 
-class api_transaction_Test extends test_base {
-
-    public static $refund;
-    public static $trans;
-
-    public static function setUpBeforeClass()
+    protected function setUp()
     {
+        parent::setUp();
         $ref = rand(10, 100000);
         $payment = array(
             "card_number" => "4111111111111111",
@@ -28,42 +27,44 @@ class api_transaction_Test extends test_base {
             "card_expiry" => "0116",
             "card_cvv" => "200",
             "card_type" => "VISA",
-            "amount" => "10.00",
+            "amount" => "20.00",
+            "customer_ref" => 1,
             "payment_ref" => $ref,
             "currency" => "eur",
             "test" => "true",
-            "hash" => md5(configuration::$app_settings['username'].$ref."10.00".configuration::$app_settings['secret'])
+//            "hash" => md5($this->api->getUsername() . $ref . "10.00" . $this->api->getSecret())
         );
         echo "Testing refund, setting up a transaction\n";
-        self::$trans = transaction::create($payment);
+        $this->trans = $this->api->transaction()->create($payment);
         $data = array(
-            "transaction_id" => self::$trans['id'],
+            "transaction_id" => $this->trans['id'],
             "amount" => "10.00",
             "reason" => "oops"
         );
         echo "Testing refund, setting up a refund\n";
-        self::$refund = refund::create($data);
+        $this->refund = $this->api->refund()->create($data);
     }
 
-    public function testGetRefund(){
+    public function testGetRefund()
+    {
         echo "Testing refund::get\n";
 
-        $res = refund::get(self::$refund['id']);
-        $this->assertEquals($res['id'], self::$refund['id']);
+        $res = $this->api->refund()->get($this->refund['id']);
+        $this->assertEquals($res['id'], $this->refund['id']);
     }
 
-    public function testCreateRefund(){
+    public function testCreateRefund()
+    {
         echo "Testing refund::create\n";
         $ref = rand(10, 100000);
 
         $data = array(
-            "transaction_id" => self::$trans['id'],
+            "transaction_id" => $this->trans['id'],
             "amount" => "10.00",
             "reason" => $ref
         );
 
-        $res = refund::create($data);
-
+        $res = $this->api->refund()->create($data);
         $this->assertEquals($res['reason'], $ref);
     }
 
