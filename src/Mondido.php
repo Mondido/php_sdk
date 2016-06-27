@@ -117,6 +117,8 @@ class Mondido
         $form = '<form id="mondido-redirect" method="post" action="' . $this->hostedWindowUrl . '">';
         $form .= '<input type="hidden" name="merchant_id" value="' . $this->username . '">';
 
+        empty($payload['test']) ? $payload['test'] = "false" : "true";
+
         foreach ($payload as $dataType => $data) {
             if (is_array($data)) {
                 $data = json_encode($data);
