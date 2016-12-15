@@ -22,6 +22,49 @@ The unit tests require PHPUnit to be installed and run `phpunit test/`
 *Changelog*
 - 1.2, Updated Hash recipe, refactor models, etc.
 
+IMPORTANT:
+---
+Mondido is a certified payment provider compliant to Payment Card Industry Data Security Standard (PCI DSS) to provide a secure transaction for merchants and their customers.
+PCI compliance for merchants is required for any business accepting cardholder data.
+
+We strongly recommend NOT sending card numbers unencrypted to and from your server.
+Let Mondido capture this sensitive information using one of our hosted window or .js solutions to avoid PCI compliance issues.
+https://www.mondido.com/documentation/hosted
+https://www.mondido.com/documentation/mondidojs
+
+CONFIGURATION:
+---
+First sign up and create your merchant account at: https://www.mondido.com/registrera
+
+#### Settings
+
+##### Api BaseUrl
+
+https://api.mondido.com/v1
+
+##### Api Username
+
+The merchant id found at: https://www.mondido.com/en/settings#api after you have logged in and created a merchant account
+
+##### Api Password
+
+The merchant password that you have set at: https://www.mondido.com/en/settings#api after you have logged in and created a merchant account
+
+##### Api Secret
+
+The merchant secret that you can find at: https://www.mondido.com/en/settings#api after you have logged in and created a merchant account
+
+##### RSAKey
+
+The merchant RSA public key that you can find at: https://www.mondido.com/en/settings#api after you have logged in and created a merchant account
+
+
+DEPENDENCIES:
+---
+This SDK require:
+Newtonsoft JSON.NET (https://www.nuget.org/packages/Newtonsoft.Json/)
+Bouncy Castle (https://www.nuget.org/packages/BouncyCastle/)
+
 ===========
 
 # Mondido Payments Documentation
@@ -82,3 +125,6 @@ Secure Socket Layer is required to securely transfer cardholder data and payment
 * Twitter https://twitter.com/mondidopay
 * LinkedIn  - https://www.linkedin.com/company/mondido
 * Instagram - https://www.instagram.com/mondidopay/
+
+
+Do not hesitate to contact support@mondido.com for any questions!
