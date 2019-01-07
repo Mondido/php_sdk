@@ -1,15 +1,15 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../src/mondido_sdk.php');
+require_once(dirname(__FILE__) . '/../vendor/autoload.php');
 
-use mondido\models\transaction;
-use mondido\models\credit_card;
+use Mondido\Models\Transaction;
+use Mondido\Models\CreditCard;
 
-$transaction = new transaction(array(
+$transaction = new Transaction(array(
 	#"MerchantId" => "",
 	"Amount" => 10,
 	"PaymentRef" => "MyOrderId",
-	"Payment" => new credit_card(array(
+	"Payment" => new CreditCard(array(
 		"Holder" => "PHPSDKTest",
 		"Cvv" => "200",
 		"Expiry" => "0116",
@@ -30,5 +30,5 @@ $transaction = new transaction(array(
 	"ErrorUrl" => ""
 ));
 
-$response = mondido\api\transaction::create($transaction);
+$response = \Mondido\Api\Transaction::create($transaction);
 print_r($response);
