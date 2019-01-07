@@ -3,18 +3,18 @@ error_reporting(E_ALL);
 require_once(dirname(__FILE__) . '/../src/mondido_sdk.php');
 
 //get the transaction id from the POST
-$transaction = mondido\request\webhook::get();
+$transaction = \Mondido\Request\webhook::get();
 //get the id
 $transaction_id = $transaction['id'];
 //log to file
 
-mondido\mondido_sdk::logToFile('log.txt',$transaction);
+Mondido\mondido_sdk::logToFile('log.txt',$transaction);
 
-$transaction = mondido\api\transaction::get(1986);
+$transaction = \Mondido\Api\Transaction::get(1986);
 print_r($transaction);
 
-$transactions = mondido\api\transaction::index(10,0);
+$transactions = \Mondido\Api\Transaction::index(10,0);
 print_r($transactions);
 
-$refund = mondido\api\refund::create($transaction['id'],'wrong payment',$transaction['amount']);
+$refund = \Mondido\Api\Refund::create($transaction['id'],'wrong payment',$transaction['amount']);
 print_r($refund);

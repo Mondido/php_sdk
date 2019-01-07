@@ -1,25 +1,50 @@
-php_sdk 1.2
+#Mondido PHP SDK 2.0 by Snowfire
 =======
 
-The PHP SDK for Mondido Payments
+To get started with the SDK, simply run `composer require snowfire/mondido-php-sdk` and include the composer-generated `autoload.php`.
+
+Every time you wish to use the api through the SDK, you must first instantiate the `Mondido\Mondido` class with your merchant id, password and secret. If you plan to use this in more than one place, it is recommended to place this instantiation in a constructor, trait or similar.
 
 
-```php
-<?php
-    error_reporting(-1);
-    include_once 'mondido_sdk.php';
+You can then access the different api features through your main instance.
 
-    //get the transaction id from the POST
-    $transaction = mondido\mondido_sdk::getWebHook();
-    //get the id
-    $transaction_id = $transaction['id'];
-    //log to file
-    mondido\mondido_sdk::logToFile('log.txt',$transaction);
+## Example
+
 ```
+<?php
+
+namespace Foo\Bar
+
+class MondidoExample
+{
+
+    private $api;
+    
+    public function __construct()
+    {
+        $merchantId = 'yourMerchantId';
+        $password = 'yourApiPassword';
+        $secret = 'yourApiSecret';
+        
+        $this->api = new Mondido\Mondido($merchantId, $password, $secret);
+    }
+    
+    public function recordPayment($data)
+    {
+        $transaction = $this->api->transaction()->create($data);
+    }
+ }
+```
+For complete API documentation, please visit [Mondido](https://doc.mondido.com/api). 
+
 
 The unit tests require PHPUnit to be installed and run `phpunit test/`
 
 *Changelog*
+- 2.0, Transitioned to non-static api
+- 2.0, Refactored all code for PSR-0
+- 2.0, Fixed tests
+- 2.0, Bug and syntax fixes
 - 1.2, Updated Hash recipe, refactor models, etc.
 
 IMPORTANT:
